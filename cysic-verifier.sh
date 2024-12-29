@@ -33,6 +33,7 @@ fi
 while [ -z "$REWARD_ADDRESS" ]; do
     REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
     if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
+        break
     else
         REWARD_ADDRESS=""
     fi
@@ -104,6 +105,7 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" 
         msg_ok "Old Cysic-Verifier has been removed."        
     fi
     msg_ok "Cysic-Verifier check complete."
+    msg_info "Starting Cysic-Verifier..."
     sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
