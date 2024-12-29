@@ -44,12 +44,12 @@ done
 mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
-tee Dockerfile << EOF
+tee Dockerfile > /dev/null << EOF
 FROM debian:bullseye-slim AS builder
 ARG REWARD_ADDRESS
-RUN apt update && \
-    apt install -y curl ca-certificates && \            
-    curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > /root/setup_linux.sh
+RUN apt update -qq && \
+    apt install -y -qq curl ca-certificates && \
+    curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > /root/setup_linux.sh
 
 WORKDIR /root/
 RUN bash ./setup_linux.sh $REWARD_ADDRESS
@@ -58,8 +58,8 @@ FROM ubuntu:jammy
 
 COPY --from=builder /root/cysic-verifier /root/cysic-verifier
 
-RUN apt update && \
-    apt install -y ca-certificates libc6
+RUN apt update -qq && \
+    apt install -y -qq ca-certificates libc6
 
 WORKDIR /root/cysic-verifier
 
@@ -68,7 +68,7 @@ RUN chmod +x entrypoint.sh
 
 CMD ["./entrypoint.sh"]
 EOF
-tee docker-compose.yml << EOF
+tee docker-compose.yml > /dev/null << EOF
 services:
   cysic-verifier:
     container_name: cysic-verifier
@@ -84,7 +84,7 @@ services:
     stop_grace_period: 5m
     network_mode: host
 EOF
-tee entrypoint.sh << EOF
+tee entrypoint.sh > /dev/null << EOF
 #!/bin/sh
 cd /root/cysic-verifier
 bash ./start.sh
