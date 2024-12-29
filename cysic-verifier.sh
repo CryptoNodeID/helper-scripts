@@ -12,6 +12,7 @@ REWARD_ADDRESS=""
 shell_check
 
 install() {
+msg_info "Installing Cysic-Verifier"
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
     msg_info "Docker is not installed. Installing Docker..."
@@ -97,17 +98,25 @@ else
 fi
 
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
+    msg_info "Checking Cysic-Verifier"
     if [ "$(docker ps -q -f name=cysic-verifier --no-trunc | wc -l)" -ne "0" ]; then
+        msg_error "Cysic-Verifier is already running."
+        msg_info "Stopping Cysic-Verifier"
         sudo docker stop cysic-verifier
+        msg_ok "Cysic-Verifier has been stopped."
     fi
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
-        sudo docker rmi cysic-verifier-cysic-verifier -f        
+        msg_error "Old Cysic-Verifier found."
+        msg_info "Removing old Cysic-Verifier"
+        sudo docker rmi cysic-verifier-cysic-verifier -f
+        msg_ok "Old Cysic-Verifier has been removed."        
     fi
+    msg_ok "Cysic-Verifier check complete."
+    msg_info "Starting Cysic-Verifier"
     sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
 
-echo -e "${CREATING}${GN}Cysic-Verifier setup has been successfully initialized!${CL}"
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
 echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
 echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
