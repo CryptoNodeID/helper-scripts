@@ -5,7 +5,6 @@ header_info
 color
 catch_errors
 
-SPINNER_PID=""
 REWARD_ADDRESS=""
 
 # Check if the shell is using bash
