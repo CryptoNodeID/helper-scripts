@@ -6,6 +6,7 @@ color
 catch_errors
 
 SPINNER_PID=""
+REWARD_ADDRESS=""
 
 # Check if the shell is using bash
 shell_check
@@ -31,12 +32,14 @@ if ! command -v docker &> /dev/null; then
     msg_ok "Docker has been installed."
 fi
 
-REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
-if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
-    msg_info "Installing Cysic-Verifier"
-else
-    exit 0
-fi
+while [ -z "$REWARD_ADDRESS" ]; do
+    REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
+    if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
+        msg_info "Installing Cysic-Verifier"
+    else
+        REWARD_ADDRESS=""
+    fi
+done
 
 mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
@@ -86,6 +89,7 @@ tee entrypoint.sh << EOF
 cd /root/cysic-verifier
 bash ./start.sh
 EOF
+msg_ok "Cysic-Verifier has been installed."
 }
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "This script will install the Cysic-Verifier. Do you want to continue?" 10 60); then
     install
