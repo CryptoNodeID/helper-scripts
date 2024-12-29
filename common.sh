@@ -138,3 +138,9 @@ shell_check() {
     exit
   fi
 }
+
+exit_script() {
+  clear
+  echo -e "\n${CROSS}${RD}User exited script${CL}\n"
+  exit
+}
