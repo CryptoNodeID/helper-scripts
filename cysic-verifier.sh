@@ -10,6 +10,7 @@ header_info
 # Check if the shell is using bash
 shell_check
 
+install() {
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
     msg_info "Docker is not installed. Installing Docker..."
@@ -29,17 +30,6 @@ if ! command -v docker &> /dev/null; then
     sudo usermod -aG docker $USER
     msg_ok "Docker has been installed."
 fi
-
-CHOICE=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --menu "This script will install the Cysic-Verifier. Do you want to continue?" 14 58 2 \
-    "yes" " " \
-    "no" " " 3>&2 2>&1 1>&3)
-  case $CHOICE in
-  yes)
-    ;;
-  no)
-    exit 0
-    ;;
-  esac
 
 REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
@@ -86,33 +76,33 @@ services:
         - REWARD_ADDRESS=$REWARD_ADDRESS
     restart: unless-stopped
     volumes:
-      - ${PWD}/data:/root/.cysic
+      - ${PWD}/data/.cysic:/root/.cysic
+      - ${PWD}/data/app:/app/data
     stop_grace_period: 5m
+    network_mode: host
 EOF
 tee entrypoint.sh << EOF
 #!/bin/sh
 cd /root/cysic-verifier
 bash ./start.sh
 EOF
+}
+if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "This script will install the Cysic-Verifier. Do you want to continue?" 10 60); then
+    install()
+else
+    exit 0
+fi
 
-CHOICE=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --menu "Do you want to run the Cysic-Verifier?" 14 58 2 \
-    "yes" " " \
-    "no" " " 3>&2 2>&1 1>&3)
-  case $CHOICE in
-  yes)
+if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --menu "Do you want to run the Cysic-Verifier?" 10 60); then
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
         sudo docker rmi cysic-verifier-cysic-verifier -f        
     fi
     sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
-    ;;
-  no)
-    exit 0
-    ;;
-  esac
+fi
 
 msg_ok "Cysic-Verifier installed successfully.\n"
 echo -e "${CREATING}${GN}Cysic-Verifier setup has been successfully initialized!${CL}"
-echo -e "${ROOTSSH}${RD} Please backup your Cysic-Verifier data folder. '$HOME/cysic-verifier/data' to prevent data loss.${CL}"
+echo -e "${ROOTSSH}${RD} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
 echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
 echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
 echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
