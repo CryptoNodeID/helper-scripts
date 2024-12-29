@@ -1,11 +1,11 @@
 #!/bin/bash
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
 base_colors
-set -euo pipefail
-shopt -s inherit_errexit nullglob
+header_info
+color
+catch_errors
 
 SPINNER_PID=""
-header_info
 
 # Check if the shell is using bash
 shell_check
