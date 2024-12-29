@@ -96,17 +96,18 @@ fi
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
     if [ "$(docker ps -q -f name=cysic-verifier --no-trunc | wc -l)" -ne "0" ]; then
         msg_error "Cysic-Verifier is already running."
-        sudo docker stop cysic-verifier
+        sudo docker stop cysic-verifier >/dev/null 2>&1
         msg_ok "Cysic-Verifier has been stopped."
     fi
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
         msg_error "Old Cysic-Verifier found."
-        sudo docker rmi cysic-verifier-cysic-verifier -f
+        msg_info "Removing old Cysic-Verifier..."
+        sudo docker rmi cysic-verifier-cysic-verifier -f >/dev/null 2>&1
         msg_ok "Old Cysic-Verifier has been removed."        
     fi
     msg_ok "Cysic-Verifier check complete."
     msg_info "Starting Cysic-Verifier..."
-    sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
+    sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d >/dev/null 2>&1
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
 
