@@ -1,5 +1,5 @@
 #!/bin/bash
-
+SPINNER_PID=""
 base_colors() {
   export NEWT_COLORS='
     root=,blue
