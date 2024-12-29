@@ -98,6 +98,9 @@ else
 fi
 
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
+    if [ "$(docker ps -q -f name=cysic-verifier --no-trunc | wc -l)" -ne "0" ]; then
+        sudo docker stop cysic-verifier
+    fi
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
         sudo docker rmi cysic-verifier-cysic-verifier -f        
     fi
