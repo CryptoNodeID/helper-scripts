@@ -82,7 +82,6 @@ services:
       - ${PWD}/data/.cysic:/root/.cysic
       - ${PWD}/data/app:/app/data
     stop_grace_period: 5m
-    network_mode: host
 EOF
 tee entrypoint.sh > /dev/null << EOF
 #!/bin/sh
