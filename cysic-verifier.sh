@@ -32,6 +32,10 @@ fi
 
 while [ -z "$REWARD_ADDRESS" ]; do
     if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM starting with 0x):" 8 60 3>&1 1>&2 2>&3); then
+      if [[ $REWARD_ADDRESS != 0x* ]]; then
+          whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --msgbox "Error: Reward Address must start with 0x" 8 60
+          REWARD_ADDRESS=""
+      fi
       if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
           break
       else
