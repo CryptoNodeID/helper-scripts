@@ -31,7 +31,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 while [ -z "$REWARD_ADDRESS" ]; do
-    if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3); then
+    if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM starting with 0x):" 8 60 3>&1 1>&2 2>&3); then
       if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
           break
       else
@@ -100,7 +100,7 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" 
     if [ "$(docker ps -q -f name=cysic-verifier --no-trunc | wc -l)" -ne "0" ]; then
         msg_error "Cysic-Verifier is already running."
         msg_info "Stopping Cysic-Verifier..."
-        sudo docker stop cysic-verifier >/dev/null 2>&1
+        sudo docker kill cysic-verifier >/dev/null 2>&1
         msg_ok "Cysic-Verifier has been stopped."
     fi
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
