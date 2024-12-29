@@ -105,11 +105,11 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" 
         sudo docker rmi cysic-verifier-cysic-verifier -f        
     fi
     sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
+    msg_ok "Cysic-Verifier started successfully.\n"
 fi
 
-msg_ok "Cysic-Verifier installed successfully.\n"
 echo -e "${CREATING}${GN}Cysic-Verifier setup has been successfully initialized!${CL}"
-echo -e "${ROOTSSH}${RD} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
+echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
 echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
 echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
 echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
