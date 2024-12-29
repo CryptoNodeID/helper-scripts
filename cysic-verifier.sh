@@ -12,7 +12,6 @@ REWARD_ADDRESS=""
 shell_check
 
 install() {
-msg_info "Installing Cysic-Verifier"
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
     msg_info "Docker is not installed. Installing Docker..."
@@ -41,7 +40,7 @@ while [ -z "$REWARD_ADDRESS" ]; do
         REWARD_ADDRESS=""
     fi
 done
-
+msg_info "Installing Cysic-Verifier"
 mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
