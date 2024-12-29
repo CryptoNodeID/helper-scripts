@@ -72,6 +72,7 @@ color() {
 }
 # This function enables error handling in the script by setting options and defining a trap for the ERR signal.
 catch_errors() {
+  set +x
   set -Eeuo pipefail
   trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
 }
