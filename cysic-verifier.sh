@@ -1,6 +1,9 @@
 #!/bin/bash
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
+set -euo pipefail
+shopt -s inherit_errexit nullglob
 
+SPINNER_PID=""
 header_info
 
 # Check if the shell is using bash
@@ -40,7 +43,6 @@ CHOICE=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verif
 REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
     msg_info "Installing Cysic-Verifier"
-    break
 else
     exit 0
 fi
@@ -107,6 +109,10 @@ CHOICE=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verif
     ;;
   esac
 
-msg_ok "Cysic-Verifier installed successfully."
-
-whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --msgbox "Please backup your Cysic-Verifier data folder. \n'$HOME/cysic-verifier/data' to prevent data loss.\n\nTo start Cysic-Verifier, run the command: \n'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'\n\nTo stop Cysic-Verifier, run the command: \n'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'\n\nTo restart Cysic-Verifier, run the command: \n'docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'\n\nTo check the logs of Cysic-Verifier, run the command: \n'docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'" 20 81
+msg_ok "Cysic-Verifier installed successfully.\n"
+echo -e "${CREATING}${GN}Cysic-Verifier setup has been successfully initialized!${CL}"
+echo -e "${ROOTSSH}${RD} Please backup your Cysic-Verifier data folder. '$HOME/cysic-verifier/data' to prevent data loss.${CL}"
+echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
+echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
+echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
+echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
