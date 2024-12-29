@@ -13,7 +13,6 @@ shell_check
 install() {
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
-    msg_info "Docker is not installed. Installing Docker..."
     for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg; done
     sudo apt update -qy
     sudo apt -qy install curl
@@ -34,12 +33,10 @@ fi
 while [ -z "$REWARD_ADDRESS" ]; do
     REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM):" 8 60 "0x" 3>&1 1>&2 2>&3)
     if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
-        msg_info "Installing Cysic-Verifier"
     else
         REWARD_ADDRESS=""
     fi
 done
-msg_info "Installing Cysic-Verifier"
 mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
@@ -96,21 +93,17 @@ else
 fi
 
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
-    msg_info "Checking Cysic-Verifier"
     if [ "$(docker ps -q -f name=cysic-verifier --no-trunc | wc -l)" -ne "0" ]; then
         msg_error "Cysic-Verifier is already running."
-        msg_info "Stopping Cysic-Verifier"
         sudo docker stop cysic-verifier
         msg_ok "Cysic-Verifier has been stopped."
     fi
     if [ "$(docker images -q cysic-verifier-cysic-verifier 2> /dev/null)" != "" ]; then
         msg_error "Old Cysic-Verifier found."
-        msg_info "Removing old Cysic-Verifier"
         sudo docker rmi cysic-verifier-cysic-verifier -f
         msg_ok "Old Cysic-Verifier has been removed."        
     fi
     msg_ok "Cysic-Verifier check complete."
-    msg_info "Starting Cysic-Verifier"
     sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
