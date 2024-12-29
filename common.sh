@@ -1,5 +1,19 @@
 #!/bin/bash
 
+base_colors() {
+  export NEWT_COLORS='
+    root=,blue
+    checkbox=,blue
+    entry=,blue
+    label=blue,
+    actlistbox=,blue
+    helpline=,blue
+    roottext=,blue
+    emptyscale=blue
+    disabledentry=blue,
+'
+}
+# This function displays a header with information about the script
 header_info() {
   clear
   cat <<"EOF"
