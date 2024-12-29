@@ -88,7 +88,7 @@ bash ./start.sh
 EOF
 }
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "This script will install the Cysic-Verifier. Do you want to continue?" 10 60); then
-    install()
+    install
 else
     exit 0
 fi
