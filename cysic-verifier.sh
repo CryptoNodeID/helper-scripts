@@ -30,21 +30,6 @@ if ! command -v docker &> /dev/null; then
     msg_ok "Docker has been installed."
 fi
 
-while [ -z "$REWARD_ADDRESS" ]; do
-    if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM starting with 0x):" 8 60 3>&1 1>&2 2>&3); then
-      if [[ $REWARD_ADDRESS != 0x* ]]; then
-          whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --msgbox "Error: Reward Address must start with 0x" 8 60
-          REWARD_ADDRESS=""
-      fi
-      if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
-          break
-      else
-          REWARD_ADDRESS=""
-      fi
-    else
-      exit_script
-    fi
-done
 mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
@@ -94,7 +79,23 @@ bash ./start.sh
 EOF
 msg_ok "Cysic-Verifier has been installed."
 }
+
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "This script will install the Cysic-Verifier. Do you want to continue?" 10 60); then
+    while [ -z "$REWARD_ADDRESS" ]; do
+      if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --inputbox "Input your reward address (EVM starting with 0x):" 8 60 3>&1 1>&2 2>&3); then
+        if [[ $REWARD_ADDRESS != 0x* ]]; then
+            whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --msgbox "Error: Reward Address must start with 0x" 8 60
+            REWARD_ADDRESS=""
+        fi
+        if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "\nReward Address: $REWARD_ADDRESS\n\nContinue with the installation?" 10 60); then
+            break
+        else
+            REWARD_ADDRESS=""
+        fi
+      else
+        exit_script
+      fi
+    done
     install
 else
     exit_script
