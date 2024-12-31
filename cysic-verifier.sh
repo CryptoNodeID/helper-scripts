@@ -183,6 +183,9 @@ while true; do
             init_cysic "Prover"
             break
             ;;
+        *)
+            exit_script
+            ;;
     esac
 done
 
