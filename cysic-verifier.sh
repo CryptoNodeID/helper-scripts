@@ -34,23 +34,11 @@ mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
 tee Dockerfile > /dev/null << EOF
-FROM debian:bullseye-slim AS builder
-ARG REWARD_ADDRESS
-RUN apt update -qq && \
-    apt install -y -qq curl ca-certificates && \
-    curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > /root/setup_linux.sh
-
-WORKDIR /root/
-RUN bash ./setup_linux.sh $REWARD_ADDRESS
-
-FROM ubuntu:jammy
-
-COPY --from=builder /root/cysic-verifier /root/cysic-verifier
+FROM debian:bullseye-slim
 
 RUN apt update -qq && \
-    apt install -y -qq ca-certificates libc6
-
-WORKDIR /root/cysic-verifier
+    apt install -y -qq curl ca-certificates libc6 && \
+    curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh -o /root/setup_linux.sh
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
@@ -61,19 +49,23 @@ tee docker-compose.yml > /dev/null << EOF
 services:
   cysic-verifier:
     container_name: cysic-verifier
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - REWARD_ADDRESS=$REWARD_ADDRESS
+    build: .
     restart: unless-stopped
     volumes:
       - ${PWD}/data/.cysic:/root/.cysic
       - ${PWD}/data/app:/app/data
+    environment:
+      - REWARD_ADDRESS=${REWARD_ADDRESS}
     stop_grace_period: 5m
+    network_mode: host
 EOF
 tee entrypoint.sh > /dev/null << EOF
 #!/bin/sh
+if [ -z "\${REWARD_ADDRESS}" ]; then
+    echo "Error: REWARD_ADDRESS environment variable is not set or is empty"
+    exit 1
+fi
+bash ./root/setup_linux.sh \${REWARD_ADDRESS}
 cd /root/cysic-verifier
 bash ./start.sh
 EOF
