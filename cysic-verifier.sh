@@ -56,7 +56,7 @@ services:
       - ${PWD}/data/app:/app/data
     environment:
       - REWARD_ADDRESS=${REWARD_ADDRESS}
-    stop_grace_period: 5m
+    stop_grace_period: 1m
     network_mode: host
 EOF
 tee entrypoint.sh > /dev/null << EOF
