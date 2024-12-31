@@ -31,7 +31,7 @@ if ! command -v docker &> /dev/null; then
 fi
 msg_ok "Docker has been installed."
 }
-install_verifier() {
+install_Verifier() {
 docker_check
 
 mkdir -p $HOME/cysic-verifier
@@ -100,7 +100,7 @@ echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compos
 echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
 }
 
-install_prover() {
+install_Prover() {
 docker_check
 
 mkdir -p $HOME/cysic-prover
@@ -171,16 +171,16 @@ fi
 }
 
 while true; do
-    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --menu "Choose the type of Cysic-Verifier to install:" 10 60 2 \
+    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 2 \
         "Verifier" "Install the Cysic-Verifier (Default)" \
         "Prover" "Install the Cysic-Prover" 3>&1 1>&2 2>&3)
     case $choice in
         "Verifier")
-            init_cysic "verifier"
+            init_cysic "Verifier"
             break
             ;;
         "Prover")
-            init_cysic "prover"
+            init_cysic "Prover"
             break
             ;;
     esac
