@@ -34,10 +34,10 @@ mkdir -p $HOME/cysic-verifier
 cd $HOME/cysic-verifier
 
 tee Dockerfile > /dev/null << EOF
-FROM debian:bullseye-slim
+FROM ubuntu:noble
 
-RUN apt update -qq && \
-    apt install -y -qq curl ca-certificates libc6 && \
+RUN apt update -qq && \\
+    apt install -y -qq curl ca-certificates libc6 && \\
     curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh -o /root/setup_linux.sh
 
 COPY entrypoint.sh .
