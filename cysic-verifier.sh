@@ -171,24 +171,20 @@ fi
 }
 
 while true; do
-    if (choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 2 \
+    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 2 \
         "Verifier" "Install the Cysic-Verifier (Default)" \
-        "Prover" "Install the Cysic-Prover" 3>&1 1>&2 2>&3)); then
-      case $choice in
-          "Verifier")
-              init_cysic "Verifier"
-              break
-              ;;
-          "Prover")
-              init_cysic "Prover"
-              break
-              ;;
-          *)
-              exit_script
-              ;;
-      esac
-    else
-      exit_script
-    fi
+        "Prover" "Install the Cysic-Prover" 3>&1 1>&2 2>&3)
+    case $choice in
+        "Verifier")
+            init_cysic "Verifier"
+            break
+            ;;
+        "Prover")
+            init_cysic "Prover"
+            break
+            ;;
+        "")
+            exit_script
+            ;;
+    esac
 done
-
