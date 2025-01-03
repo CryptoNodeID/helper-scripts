@@ -183,8 +183,8 @@ while true; do
             init_cysic "Prover"
             break
             ;;
-        "")
-            exit_script
-            ;;
     esac
+    if [ $? -eq 0 ]; then
+        exit_script
+    fi
 done
