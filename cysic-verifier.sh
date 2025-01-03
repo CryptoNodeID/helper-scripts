@@ -174,17 +174,21 @@ while true; do
     choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 2 \
         "Verifier" "Install the Cysic-Verifier (Default)" \
         "Prover" "Install the Cysic-Prover" 3>&1 1>&2 2>&3)
+    if [ $? -ne 0 ]; then
+      echo -e "${CROSS}${RD} Menu canceled. Exiting.${CL}"
+      exit 0
+    fi
     case $choice in
         "Verifier")
-            init_cysic "Verifier"
-            break
-            ;;
+          init_cysic "Verifier"
+          break
+          ;;
         "Prover")
-            init_cysic "Prover"
-            break
-            ;;
+          init_cysic "Prover"
+          break
+          ;;
+        *)
+          echo -e "${CROSS}${RD}Invalid option, please try again.${CL}"
+          ;;
     esac
-    if [ $? -eq 0 ]; then
-        exit_script
-    fi
 done
