@@ -53,7 +53,7 @@ tee docker-compose.yml > /dev/null << EOF
 services:
   cysic-verifier:
     container_name: cysic-verifier
-    build: .
+    image: cysic-verifier:latest
     restart: unless-stopped
     volumes:
       - ${PWD}/data/cysic:/root/.cysic
@@ -73,6 +73,9 @@ bash ./root/setup_linux.sh \${REWARD_ADDRESS}
 cd /root/cysic-verifier
 bash ./start.sh
 EOF
+msg_info "Building Cysic-Verifier..."
+sudo docker build -t cysic-verifier:latest -f Dockerfile . >/dev/null 2>&1
+msg_ok "Cysic-Verifier has been built."
 msg_ok "Cysic-Verifier has been installed."
 
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
@@ -128,7 +131,7 @@ tee docker-compose.yml > /dev/null << EOF
 services:
   cysic-prover:
     container_name: cysic-prover
-    build: .
+    image: cysic-prover:latest
     restart: unless-stopped
     volumes:
       - ${PWD}/data/cysic:/root/.cysic
@@ -146,6 +149,9 @@ services:
     stop_grace_period: 1m
     network_mode: host
 EOF
+msg_info "Building Cysic-Prover..."
+sudo docker build -t cysic-prover:latest -f Dockerfile . >/dev/null 2>&1
+msg_ok "Cysic-Prover has been built."
 msg_ok "Cysic-Prover has been installed."
 }
 init_cysic() {
