@@ -130,6 +130,9 @@ msg_error() {
 
 # Check if the shell is using bash
 shell_check() {
+  if ! [ -x "$(command -v whiptail)" ]; then
+    sudo apt-get install -qy whiptail
+  fi
   if [[ "$(basename "$SHELL")" != "bash" ]]; then
     clear
     msg_error "Your default shell is currently not set to Bash. To use these scripts, please switch to the Bash shell."
