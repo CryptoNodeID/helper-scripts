@@ -120,7 +120,7 @@ CMD ["./entrypoint.sh"]
 EOF
 tee entrypoint.sh > /dev/null << EOF
 #!/bin/sh
-bash ./root/setup_prover.sh
+bash ./root/setup_prover.sh \${REWARD_ADDRESS}
 cd /root/cysic-prover
 bash ./start.sh
 EOF
