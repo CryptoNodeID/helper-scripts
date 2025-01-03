@@ -76,6 +76,7 @@ EOF
 msg_info "Building Cysic-Verifier..."
 sudo docker build -t cysic-verifier:latest -f Dockerfile . >/dev/null 2>&1
 msg_ok "Cysic-Verifier has been built."
+rm -rf Dockerfile entrypoint.sh
 msg_ok "Cysic-Verifier has been installed."
 
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" --yesno "Do you want to run the Cysic-Verifier?" 10 60); then
@@ -152,6 +153,7 @@ EOF
 msg_info "Building Cysic-Prover..."
 sudo docker build -t cysic-prover:latest -f Dockerfile . >/dev/null 2>&1
 msg_ok "Cysic-Prover has been built."
+rm -rf Dockerfile entrypoint.sh
 msg_ok "Cysic-Prover has been installed."
 }
 init_cysic() {
