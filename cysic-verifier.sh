@@ -171,7 +171,7 @@ fi
 }
 
 while true; do
-    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 2 \
+    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 3 \
         "Verifier" "Install the Cysic-Verifier (Default)" \
         "Prover" "Install the Cysic-Prover" \
         "Exit" "Exit the script"  --nocancel --default-item "Verifier" 3>&1 1>&2 2>&3)
