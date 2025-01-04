@@ -152,8 +152,8 @@ EOF
 fi
 
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
-echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in $(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i up -d; done'${CL}"
-echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in $(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i down; done'${CL}"
+echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i up -d; done'${CL}"
+echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i down; done'${CL}"
 }
 install_Prover() {
 docker_check
