@@ -104,6 +104,52 @@ echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compos
 echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
 }
 
+install_Add-Verifier() {
+if [ "$(docker images -q cysic-verifier:latest 2> /dev/null)" = "" ]; then
+    msg_error "Cysic-Verifier image not found."
+    init_cysic "Verifier"
+else
+    msg_ok "Cysic-Verifier image found."
+fi
+REWARD_ADDRES=""
+while true; do
+  if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-${1}" --inputbox "Input your reward address (enter blank to exit):" 8 60 3>&1 1>&2 2>&3); then
+    if [ -z "$REWARD_ADDRESS" ]; then
+        break
+    elif [[ $REWARD_ADDRESS != 0x* ]]; then
+        whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-${1}" --msgbox "Error: Reward Address must start with 0x" 8 60
+    else
+        echo "$REWARD_ADDRESS" >> $HOME/cysic-verifier/addr.list
+    fi
+  else
+    exit_script
+  fi
+done
+
+for line in $(cat addr.list); do
+REWARD_ADDRESS=$line
+i=$(ls | grep -e "docker-compose" | wc -l)
+tee docker-compose${i}.yml > /dev/null <<EOF
+services:
+  cysic-verifier-${i}:
+    container_name: cysic-verifier-${i}
+    image: cysic-verifier:latest
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/data/.cysic:/root/.cysic
+      - ${PWD}/data/app:/app/data
+    environment:
+      - REWARD_ADDRESS=${REWARD_ADDRESS}
+    stop_grace_period: 1m
+    network_mode: host
+EOF
+i=$((i+1))
+done
+
+echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
+echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in $(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i up -d; done'${CL}"
+echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in $(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i down; done'${CL}"
+}
 install_Prover() {
 docker_check
 
@@ -179,8 +225,9 @@ fi
 }
 
 while true; do
-    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 60 3 \
+    choice=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Node" --menu "Choose the type of Cysic-Node to install:" 10 80 4 \
         "Verifier" "Install the Cysic-Verifier (Default)" \
+        "Add Verifier" "Need to install Cysic-Verifier first" \
         "Prover" "Install the Cysic-Prover" \
         "Exit" "Exit the script"  --nocancel --default-item "Verifier" 3>&1 1>&2 2>&3)
 
@@ -192,6 +239,10 @@ while true; do
     case $choice in
         "Verifier")
           init_cysic "Verifier"
+          break
+          ;;
+        "Add Verifier")
+          init_cysic "Add-Verifier"
           break
           ;;
         "Prover")
