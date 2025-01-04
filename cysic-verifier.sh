@@ -126,9 +126,13 @@ while true; do
   fi
 done
 
-for line in $(cat addr.list); do
-REWARD_ADDRESS=$line
-i=$(ls | grep -e "docker-compose" | wc -l)
+if [ ! -s $HOME/cysic-verifier/addr.list ]; then
+    msg_error "No reward address added or the file is blank."
+    exit
+  else
+    for line in $(cat addr.list); do
+    REWARD_ADDRESS=$line
+    i=$(ls | grep -e "docker-compose" | wc -l)
 tee docker-compose${i}.yml > /dev/null <<EOF
 services:
   cysic-verifier-${i}:
@@ -143,8 +147,9 @@ services:
     stop_grace_period: 1m
     network_mode: host
 EOF
-i=$((i+1))
-done
+    i=$((i+1))
+    done
+fi
 
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
 echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in $(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f $i up -d; done'${CL}"
