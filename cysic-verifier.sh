@@ -113,11 +113,11 @@ else
 fi
 REWARD_ADDRES=""
 while true; do
-  if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-${1}" --inputbox "Input your reward address (enter blank to exit):" 8 60 3>&1 1>&2 2>&3); then
+  if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --inputbox "Input your reward address (enter blank to exit):" 8 60 3>&1 1>&2 2>&3); then
     if [ -z "$REWARD_ADDRESS" ]; then
         break
     elif [[ $REWARD_ADDRESS != 0x* ]]; then
-        whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-${1}" --msgbox "Error: Reward Address must start with 0x" 8 60
+        whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --msgbox "Error: Reward Address must start with 0x" 8 60
     else
         echo "$REWARD_ADDRESS" >> $HOME/cysic-verifier/addr.list
     fi
@@ -242,7 +242,7 @@ while true; do
           break
           ;;
         "Add Verifier")
-          init_cysic "Add-Verifier"
+          install_Add-Verifier
           break
           ;;
         "Prover")
