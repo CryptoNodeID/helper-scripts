@@ -98,10 +98,10 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" 
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
-echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
-echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
-echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
-echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
+echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
+echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
+echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
+echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
 }
 
 install_Add-Verifier() {
@@ -154,8 +154,8 @@ EOF
 fi
 rm -f $HOME/cysic-verifier/addr.list
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
-echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f \$i up -d; done'${CL}"
-echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do docker compose -f \$i down; done'${CL}"
+echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do sudo docker compose -f \$i up -d; done'${CL}"
+echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do sudo docker compose -f \$i down; done'${CL}"
 }
 install_Prover() {
 docker_check
