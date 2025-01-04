@@ -131,7 +131,7 @@ msg_error() {
 # Check if the shell is using bash
 shell_check() {
   if ! [ -x "$(command -v whiptail)" ]; then
-    sudo apt-get install -qy whiptail
+    sudo apt-get install -qy whiptail > /dev/null
   fi
   if [[ "$(basename "$SHELL")" != "bash" ]]; then
     clear
