@@ -140,7 +140,7 @@ services:
     image: cysic-verifier:latest
     restart: unless-stopped
     volumes:
-      - ${PWD}/data/.cysic:/root/.cysic
+      - ${PWD}/data/cysic:/root/.cysic
       - ${PWD}/data/app:/app/data
     environment:
       - REWARD_ADDRESS=${REWARD_ADDRESS}
