@@ -130,6 +130,7 @@ msg_error() {
 
 # Check if the shell is using bash
 shell_check() {
+  msg_info "Checking required commands..."
   if ! [ -x "$(command -v whiptail)" ]; then
     sudo apt-get install -qy whiptail > /dev/null
   fi
@@ -140,6 +141,7 @@ shell_check() {
     sleep 2
     exit
   fi
+  msg_ok "Ready!"
 }
 
 exit_script() {
