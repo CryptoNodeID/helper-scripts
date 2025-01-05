@@ -163,8 +163,10 @@ if ! [ -x "$(command -v supervisorctl)" ]; then
     sudo apt install -y supervisor
     msg_ok "Supervisor has been installed."
 fi
-
+msg_info "Initializing Cysic-Prover..."
 curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_prover.sh > $HOME/setup_prover.sh && bash $HOME/setup_prover.sh ${REWARD_ADDRESS}
+msg_ok "Cysic-Prover Initialized."
+msg_info "Configuring Supervisor..."
 cd $HOME/cysic-prover
 tee cysic-prover.conf > /dev/null <<EOF
 [program:cysic]
@@ -178,8 +180,12 @@ directory=/root/cysic-prover
 EOF
 echo -e "\n[include]\nfiles = ${HOME}/cysic-prover/cysic-prover.conf\n" >> /etc/supervisor/supervisord.conf
 supervisorctl reread
-supervisorctl update
-msg_ok "Cysic-Prover has been installed."
+msg_ok "Supervisor has been configured."
+if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Prover" --yesno "Do you want to run the Cysic-Prover?" 10 60); then
+    supervisorctl update
+    supervisorctl start cysic
+    msg_ok "Cysic-Verifier has been started."
+fi
 
 echo -e "${ROOTSSH}${YW} Please backup your Cysic-Prover keys folder. '$HOME/cysic-prover/~/.cysic/assets' to prevent data loss.${CL}"
 echo -e "${INFO}${GN} To start Cysic-Prover, run the command: 'sudo supervisorctl start cysic'${CL}"
