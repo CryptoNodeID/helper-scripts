@@ -158,56 +158,33 @@ echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$
 echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do sudo docker compose -f \$i down; done'${CL}"
 }
 install_Prover() {
-docker_check
+if ! [ -x "$(command -v supervisorctl)" ]; then
+    msg_info "Supervisor is not installed. Installing..."
+    sudo apt install -y supervisor
+    msg_ok "Supervisor has been installed."
+fi
 
-mkdir -p $HOME/cysic-prover
+curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_prover.sh > $HOME/setup_prover.sh && bash $HOME/setup_prover.sh ${REWARD_ADDRESS}
 cd $HOME/cysic-prover
-
-tee Dockerfile > /dev/null << EOF
-FROM ubuntu:noble
-
-RUN apt update -qq && \\
-    apt install -y -qq curl ca-certificates libc6 && \\
-    curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_prover.sh > /root/setup_prover.sh
-
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-
-CMD ["./entrypoint.sh"]
+tee cysic-prover.conf > /dev/null <<EOF
+[program:cysic]
+command=/root/cysic-prover/prover
+autostart=true
+autorestart=true
+stderr_logfile=/root/cysic-prover/cysic-prover.log
+stdout_logfile=/root/cysic-prover/cysic-prover.log
+environment=LD_LIBRARY_PATH="/root/cysic-prover:$LD_LIBRARY_PATH",CHAIN_ID="534352:$CHAIN_ID"
+directory=/root/cysic-prover
 EOF
-tee entrypoint.sh > /dev/null << EOF
-#!/bin/sh
-bash ./root/setup_prover.sh \${REWARD_ADDRESS}
-cd /root/cysic-prover
-bash ./start.sh
-EOF
-tee docker-compose.yml > /dev/null << EOF
-services:
-  cysic-prover:
-    container_name: cysic-prover
-    image: cysic-prover:latest
-    restart: unless-stopped
-    volumes:
-      - ${PWD}/data/cysic:/root/.cysic
-      - ${PWD}/data/app:/app/data
-      - ${PWD}/data/scroll_prover:/root/.scroll_prover
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: "nvidia"
-              count: "all"
-              capabilities: ["gpu"]
-    environment:
-      - REWARD_ADDRESS=${REWARD_ADDRESS}
-    stop_grace_period: 1m
-    network_mode: host
-EOF
-msg_info "Building Cysic-Prover..."
-sudo docker build -t cysic-prover:latest -f Dockerfile . >/dev/null 2>&1
-msg_ok "Cysic-Prover has been built."
-rm -rf Dockerfile entrypoint.sh
+echo -e "\n[include]\nfiles = ${HOME}/cysic-prover/cysic-prover.conf\n" >> /etc/supervisor/supervisord.conf
+supervisorctl reread
+supervisorctl update
 msg_ok "Cysic-Prover has been installed."
+
+echo -e "${ROOTSSH}${YW} Please backup your Cysic-Prover keys folder. '$HOME/cysic-prover/~/.cysic/assets' to prevent data loss.${CL}"
+echo -e "${INFO}${GN} To start Cysic-Prover, run the command: 'sudo supervisorctl start cysic'${CL}"
+echo -e "${INFO}${GN} To stop Cysic-Prover, run the command: 'sudo supervisorctl stop cysic'${CL}"
+echo -e "${INFO}${GN} To check Cysic-Prover logs, run the command: 'sudo supervisorctl tail cysic stderr'${CL}"
 }
 init_cysic() {
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-${1}" --yesno "This script will install the Cysic-${1}. Do you want to continue?" 10 60); then
