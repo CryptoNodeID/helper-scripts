@@ -1,4 +1,5 @@
 #!/bin/bash
+export DEBIAN_FRONTEND="noninteractive"
 apt-get update -qy --allow-unauthenticated > /dev/null
 apt-get install -y -qq curl ca-certificates sudo > /dev/null
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
