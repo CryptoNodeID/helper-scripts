@@ -132,14 +132,8 @@ msg_error() {
 shell_check() {
   msg_info "Checking dependencies..."
   apt update -qy > /dev/null
-  if ! [ -x "$(command -v sudo)" ]; then
-    sudo apt-get install -qy sudo > /dev/null
-  fi
   if ! [ -x "$(command -v whiptail)" ]; then
     sudo apt-get install -qy whiptail > /dev/null
-  fi
-  if ! [ -x "$(command -v curl)" ]; then
-    sudo apt-get install -qy curl > /dev/null
   fi
   if [[ "$(basename "$SHELL")" != "bash" ]]; then
     clear
