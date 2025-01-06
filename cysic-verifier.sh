@@ -185,8 +185,8 @@ echo -e "\n[include]\nfiles = ${HOME}/cysic-prover/cysic-prover.conf\n" >> /etc/
 supervisorctl reread
 msg_ok "Supervisor has been configured."
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Prover" --yesno "Do you want to run the Cysic-Prover?" 10 60); then
-    supervisorctl update
-    supervisorctl start cysic
+    supervisorctl update > /dev/null 2>&1
+    supervisorctl start cysic > /dev/null 2>&1
     msg_ok "Cysic-Verifier has been started."
 fi
 
