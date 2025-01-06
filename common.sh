@@ -131,10 +131,10 @@ msg_error() {
 # Check if the shell is using bash
 shell_check() {
   msg_info "Checking dependencies..."
-  apt-get update -qy --allow-unauthenticated > /dev/null
-  apt-get install -y -qq sudo > /dev/null
+  apt-get update -qy --allow-unauthenticated > /dev/null 2>&1
+  apt-get install -y -qq sudo > /dev/null 2>&1
   if ! [ -x "$(command -v whiptail)" ]; then
-    sudo apt-get install -qy whiptail > /dev/null
+    sudo apt-get install -qy whiptail > /dev/null 2>&1
   fi
   if [[ "$(basename "$SHELL")" != "bash" ]]; then
     clear

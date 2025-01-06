@@ -1,7 +1,7 @@
 #!/bin/bash
 export DEBIAN_FRONTEND="noninteractive"
-apt-get update -qy --allow-unauthenticated > /dev/null
-apt-get install -y -qq curl ca-certificates sudo > /dev/null
+apt-get update -qy --allow-unauthenticated > /dev/null 2>&1
+apt-get install -y -qq curl ca-certificates sudo > /dev/null 2>&1
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
 base_colors
 header_info
@@ -17,18 +17,18 @@ docker_check(){
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
   msg_info "Installing docker..."
-  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg > /dev/null; done
-  sudo apt-get update -qy > /dev/null
-  sudo apt-get -qy install curl > /dev/null
+  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg > /dev/null 2>&1; done
+  sudo apt-get update -qy > /dev/null 2>&1
+  sudo apt-get -qy install curl > /dev/null 2>&1
   sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
   echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update -qy > /dev/null
-  sudo apt-get install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 2>&1
+  sudo apt-get update -qy > /dev/null 2>&1
+  sudo apt-get install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null 2>&1
   sudo systemctl enable --now docker
   sudo usermod -aG docker $USER
 fi
@@ -163,7 +163,7 @@ echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(
 install_Prover() {
 if ! [ -x "$(command -v supervisorctl)" ]; then
     msg_info "Supervisor is not installed. Installing..."
-    sudo apt-get install -qy supervisor > /dev/null
+    sudo apt-get install -qy supervisor > /dev/null 2>&1
     msg_ok "Supervisor has been installed."
 fi
 msg_info "Initializing Cysic-Prover... *This may take some time, go get a cup of coffee*"
