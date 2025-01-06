@@ -16,9 +16,9 @@ docker_check(){
 # Check and install docker if not available
 if ! command -v docker &> /dev/null; then
   msg_info "Installing docker..."
-  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg; done
-  sudo apt update -qy
-  sudo apt -qy install curl
+  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg > /dev/null; done
+  sudo apt update -qy > /dev/null
+  sudo apt -qy install curl > /dev/null
   sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -26,8 +26,8 @@ if ! command -v docker &> /dev/null; then
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt update -qy
-  sudo apt install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo apt update -qy > /dev/null
+  sudo apt install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
   sudo systemctl enable --now docker
   sudo usermod -aG docker $USER
 fi
@@ -162,7 +162,7 @@ echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(
 install_Prover() {
 if ! [ -x "$(command -v supervisorctl)" ]; then
     msg_info "Supervisor is not installed. Installing..."
-    sudo apt install -y supervisor
+    sudo apt install -qy supervisor > /dev/null
     msg_ok "Supervisor has been installed."
 fi
 msg_info "Initializing Cysic-Prover..."
