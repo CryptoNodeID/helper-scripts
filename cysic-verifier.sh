@@ -1,6 +1,6 @@
 #!/bin/bash
-apt update -qy --allow-unauthenticated > /dev/null
-apt install -y -qq curl ca-certificates sudo > /dev/null
+apt-get update -qy --allow-unauthenticated > /dev/null
+apt-get install -y -qq curl ca-certificates sudo > /dev/null
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
 base_colors
 header_info
@@ -17,8 +17,8 @@ docker_check(){
 if ! command -v docker &> /dev/null; then
   msg_info "Installing docker..."
   for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -qy $pkg > /dev/null; done
-  sudo apt update -qy > /dev/null
-  sudo apt -qy install curl > /dev/null
+  sudo apt-get update -qy > /dev/null
+  sudo apt-get -qy install curl > /dev/null
   sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -26,8 +26,8 @@ if ! command -v docker &> /dev/null; then
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt update -qy > /dev/null
-  sudo apt install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
+  sudo apt-get update -qy > /dev/null
+  sudo apt-get install -qy docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
   sudo systemctl enable --now docker
   sudo usermod -aG docker $USER
 fi
@@ -42,8 +42,8 @@ cd $HOME/cysic-verifier
 tee Dockerfile > /dev/null << EOF
 FROM ubuntu:noble
 
-RUN apt update -qq && \\
-    apt install -y -qq curl ca-certificates libc6 && \\
+RUN apt-get update -qq && \\
+    apt-get install -y -qq curl ca-certificates libc6 && \\
     curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh -o /root/setup_linux.sh
 
 COPY entrypoint.sh .
@@ -162,7 +162,7 @@ echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(
 install_Prover() {
 if ! [ -x "$(command -v supervisorctl)" ]; then
     msg_info "Supervisor is not installed. Installing..."
-    sudo apt install -qy supervisor > /dev/null
+    sudo apt-get install -qy supervisor > /dev/null
     msg_ok "Supervisor has been installed."
 fi
 msg_info "Initializing Cysic-Prover... *This may take some time, go get a cup of coffee*"
