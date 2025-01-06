@@ -175,7 +175,7 @@ autostart=true
 autorestart=true
 stderr_logfile=/root/cysic-prover/cysic-prover.log
 stdout_logfile=/root/cysic-prover/cysic-prover.log
-environment=LD_LIBRARY_PATH="/root/cysic-prover:$LD_LIBRARY_PATH",CHAIN_ID="534352:$CHAIN_ID"
+environment=LD_LIBRARY_PATH="/root/cysic-prover:\$LD_LIBRARY_PATH",CHAIN_ID="534352:\$CHAIN_ID"
 directory=/root/cysic-prover
 EOF
 echo -e "\n[include]\nfiles = ${HOME}/cysic-prover/cysic-prover.conf\n" >> /etc/supervisor/supervisord.conf
