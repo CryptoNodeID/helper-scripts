@@ -165,7 +165,7 @@ if ! [ -x "$(command -v supervisorctl)" ]; then
     sudo apt install -qy supervisor > /dev/null
     msg_ok "Supervisor has been installed."
 fi
-msg_info "Initializing Cysic-Prover..."
+msg_info "Initializing Cysic-Prover... *This may take some time, go get a cup of coffee*"
 curl -sL https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_prover.sh > $HOME/setup_prover.sh && bash $HOME/setup_prover.sh ${REWARD_ADDRESS} > /dev/null 2>&1
 msg_ok "Cysic-Prover Initialized."
 msg_info "Configuring Supervisor..."
