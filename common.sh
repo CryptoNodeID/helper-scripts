@@ -131,7 +131,7 @@ msg_error() {
 # Check if the shell is using bash
 shell_check() {
   msg_info "Checking dependencies..."
-  apt update -qy > /dev/null
+  apt update -qy --allow-unauthenticated > /dev/null
   if ! [ -x "$(command -v whiptail)" ]; then
     sudo apt-get install -qy whiptail > /dev/null
   fi

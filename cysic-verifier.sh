@@ -1,5 +1,5 @@
 #!/bin/bash
-apt update -qy > /dev/null
+apt update -qy --allow-unauthenticated > /dev/null
 apt install -y -qq curl ca-certificates sudo > /dev/null
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
 base_colors
