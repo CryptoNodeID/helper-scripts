@@ -114,6 +114,7 @@ if [ "$(docker images -q cysic-verifier:latest 2> /dev/null)" = "" ]; then
 else
     msg_ok "Cysic-Verifier image found."
 fi
+rm -rf $HOME/cysic-verifier/addr.list
 REWARD_ADDRES=""
 while true; do
   if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --inputbox "Input your reward address (enter blank to exit):" 8 60 3>&1 1>&2 2>&3); then
