@@ -123,6 +123,11 @@ while true; do
         whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --msgbox "Error: Reward Address must start with 0x" 8 60
     else
         echo "$REWARD_ADDRESS" >> $HOME/cysic-verifier/addr.list
+        if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --yesno "\nReward Address: $REWARD_ADDRESS has been added.\n\nAdd another reward address?" 10 60); then
+            continue
+        else
+            break
+        fi
     fi
   else
     exit_script
