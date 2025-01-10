@@ -1,5 +1,6 @@
 #!/bin/bash
 export DEBIAN_FRONTEND="noninteractive"
+WORKDIR=$HOME/cysic-verifier
 sudo apt-get update -qy > /dev/null 2>&1
 sudo apt-get install -y -qq curl ca-certificates sudo > /dev/null 2>&1
 source <(curl -s https://raw.githubusercontent.com/CryptoNodeID/helper-script/master/common.sh)
@@ -37,8 +38,8 @@ msg_ok "Docker has been installed."
 install_Verifier() {
 docker_check
 
-mkdir -p $HOME/cysic-verifier
-cd $HOME/cysic-verifier
+mkdir -p $WORKDIR
+cd $WORKDIR
 
 tee Dockerfile > /dev/null << EOF
 FROM ubuntu:noble
@@ -97,14 +98,14 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier" 
     fi
     msg_ok "Cysic-Verifier check complete."
     msg_info "Starting Cysic-Verifier..."
-    sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d >/dev/null 2>&1
+    sudo docker compose -f $WORKDIR/docker-compose.yml up -d >/dev/null 2>&1
     msg_ok "Cysic-Verifier started successfully.\n"
 fi
-echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
-echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml up -d'${CL}"
-echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml down'${CL}"
-echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml restart'${CL}"
-echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'sudo docker compose -f $HOME/cysic-verifier/docker-compose.yml logs -fn 100'${CL}"
+echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$WORKDIR/data/keys' to prevent data loss.${CL}"
+echo -e "${INFO}${GN} To start Cysic-Verifier, run the command: 'sudo docker compose -f $WORKDIR/docker-compose.yml up -d'${CL}"
+echo -e "${INFO}${GN} To stop Cysic-Verifier, run the command: 'sudo docker compose -f $WORKDIR/docker-compose.yml down'${CL}"
+echo -e "${INFO}${GN} To restart Cysic-Verifier, run the command: 'sudo docker compose -f $WORKDIR/docker-compose.yml restart'${CL}"
+echo -e "${INFO}${GN} To check the logs of Cysic-Verifier, run the command: 'sudo docker compose -f $WORKDIR/docker-compose.yml logs -fn 100'${CL}"
 }
 
 install_Add-Verifier() {
@@ -114,7 +115,7 @@ if [ "$(docker images -q cysic-verifier:latest 2> /dev/null)" = "" ]; then
 else
     msg_ok "Cysic-Verifier image found."
 fi
-rm -rf $HOME/cysic-verifier/addr.list
+rm -rf $WORKDIR/addr.list
 REWARD_ADDRES=""
 while true; do
   if REWARD_ADDRESS=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --inputbox "Input your reward address (enter blank to exit):" 8 60 3>&1 1>&2 2>&3); then
@@ -123,7 +124,7 @@ while true; do
     elif [[ $REWARD_ADDRESS != 0x* ]]; then
         whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --msgbox "Error: Reward Address must start with 0x" 8 60
     else
-        echo "$REWARD_ADDRESS" >> $HOME/cysic-verifier/addr.list
+        echo "$REWARD_ADDRESS" >> $WORKDIR/addr.list
         if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --yesno "\nReward Address: $REWARD_ADDRESS has been added.\n\nAdd another reward address?" 12 60); then
             continue
         else
@@ -134,16 +135,16 @@ while true; do
     exit_script
   fi
 done
-if [ ! -s $HOME/cysic-verifier/addr.list ]; then
+if [ ! -s $WORKDIR/addr.list ]; then
     msg_error "No reward address added or the file is blank."
     exit
   else
-    i=$(find $HOME/cysic-verifier/ -name "docker-compose*" | wc -l)
-    for line in $(cat $HOME/cysic-verifier/addr.list); do
+    i=$(find $WORKDIR/ -name "docker-compose*" | wc -l)
+    for line in $(cat $WORKDIR/addr.list); do
     i=$((i+1))
     msg_info "Creating docker-compose${i}.yml..."
     REWARD_ADDRESS=$line
-tee $HOME/cysic-verifier/docker-compose${i}.yml > /dev/null <<EOF
+tee $WORKDIR/docker-compose${i}.yml > /dev/null <<EOF
 services:
   cysic-verifier-${i}:
     container_name: cysic-verifier-${i}
@@ -160,10 +161,10 @@ EOF
     msg_ok "docker-compose${i}.yml created successfully."
     done
 fi
-rm -f $HOME/cysic-verifier/addr.list
-echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$HOME/cysic-verifier/data/keys' to prevent data loss.${CL}"
-echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do sudo docker compose -f \$i up -d; done'${CL}"
-echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $HOME/cysic-verifier/* | grep -e "docker-compose"); do sudo docker compose -f \$i down; done'${CL}"
+rm -f $WORKDIR/addr.list
+echo -e "${ROOTSSH}${YW} Please backup your Cysic-Verifier keys folder. '$WORKDIR/data/keys' to prevent data loss.${CL}"
+echo -e "${INFO}${GN} To start all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $WORKDIR/* | grep -e "docker-compose"); do sudo docker compose -f \$i up -d; done'${CL}"
+echo -e "${INFO}${GN} To stop all Cysic-Verifier, run the command: 'for i in \$(ls -d -1 $WORKDIR/* | grep -e "docker-compose"); do sudo docker compose -f \$i down; done'${CL}"
 }
 install_Prover() {
 if ! [ -x "$(command -v supervisorctl)" ]; then
