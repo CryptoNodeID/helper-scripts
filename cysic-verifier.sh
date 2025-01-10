@@ -143,7 +143,7 @@ if [ ! -s $HOME/cysic-verifier/addr.list ]; then
     i=$((i+1))
     msg_info "Creating docker-compose${i}.yml..."
     REWARD_ADDRESS=$line
-tee docker-compose${i}.yml > /dev/null <<EOF
+tee $HOME/cysic-verifier/docker-compose${i}.yml > /dev/null <<EOF
 services:
   cysic-verifier-${i}:
     container_name: cysic-verifier-${i}
