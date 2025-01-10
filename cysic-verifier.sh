@@ -142,7 +142,7 @@ if [ ! -s $HOME/cysic-verifier/addr.list ]; then
     for line in $(cat $HOME/cysic-verifier/addr.list); do
     msg_info "Creating docker-compose${i}.yml..."
     REWARD_ADDRESS=$line
-    i=$(ls | grep -e "docker-compose" | wc -l)
+    i=$(ls $HOME/cysic-verifier/ | grep -e "docker-compose" | wc -l)
 tee docker-compose${i}.yml > /dev/null <<EOF
 services:
   cysic-verifier-${i}:
