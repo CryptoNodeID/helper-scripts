@@ -138,11 +138,9 @@ if [ ! -s $HOME/cysic-verifier/addr.list ]; then
     msg_error "No reward address added or the file is blank."
     exit
   else
-    for line in $(cat $HOME/cysic-verifier/addr.list); do
     i=$(ls $HOME/cysic-verifier/ | grep -e "docker-compose" | wc -l)
-    if [ -z $i ]; then
-      i=1
-    fi
+    for line in $(cat $HOME/cysic-verifier/addr.list); do
+    i=$((i+1))
     msg_info "Creating docker-compose${i}.yml..."
     REWARD_ADDRESS=$line
 tee docker-compose${i}.yml > /dev/null <<EOF
@@ -159,7 +157,6 @@ services:
     stop_grace_period: 1m
     network_mode: host
 EOF
-    i=$((i+1))
     msg_ok "docker-compose${i}.yml created successfully."
     done
 fi
