@@ -124,7 +124,7 @@ while true; do
         whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --msgbox "Error: Reward Address must start with 0x" 8 60
     else
         echo "$REWARD_ADDRESS" >> $HOME/cysic-verifier/addr.list
-        if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --yesno "\nReward Address: $REWARD_ADDRESS has been added.\n\nAdd another reward address?" 15 60); then
+        if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --yesno "\nReward Address: $REWARD_ADDRESS has been added.\n\nAdd another reward address?" 12 60); then
             continue
         else
             break
@@ -134,7 +134,6 @@ while true; do
     exit_script
   fi
 done
-
 if [ ! -s $HOME/cysic-verifier/addr.list ]; then
     msg_error "No reward address added or the file is blank."
     exit
@@ -143,6 +142,9 @@ if [ ! -s $HOME/cysic-verifier/addr.list ]; then
     msg_info "Creating docker-compose${i}.yml..."
     REWARD_ADDRESS=$line
     i=$(ls $HOME/cysic-verifier/ | grep -e "docker-compose" | wc -l)
+    if [ -z $i ]; then
+      i=1
+    fi
 tee docker-compose${i}.yml > /dev/null <<EOF
 services:
   cysic-verifier-${i}:
