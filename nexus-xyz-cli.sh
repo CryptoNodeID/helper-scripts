@@ -94,7 +94,7 @@ fi
 NEXUS_HOME=\$HOME/.nexus
 echo "\$NODE_ID" > \$NEXUS_HOME/node-id
 cd \$NEXUS_HOME
-echo "y" | ./nexus-network --start --beta
+echo "y" | ./nexus-network start --env beta
 
 exec "\$@"
 EOF
