@@ -62,7 +62,7 @@ RUN apt update && \\
     apt install -y ca-certificates pkg-config libssl-dev && \\
     mkdir /root/.nexus
 
-COPY --from=builder /root/.nexus/network-api/clients/cli/src /root/.nexus/src
+COPY --from=builder /root/.nexus/ /root/.nexus/
 COPY --from=builder /root/.nexus/network-api/clients/cli/target/release/nexus-network /root/.nexus/nexus-network
 
 WORKDIR /root/.nexus
