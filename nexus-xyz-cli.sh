@@ -174,7 +174,10 @@ init_nexus() {
 if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Nexus-${1}" --yesno "This script will install the Nexus-${1}. Do you want to continue?" 10 60); then
     while [ -z "$NODE_ID" ]; do
       if NODE_ID=$(whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Nexus-${1}" --inputbox "Input your Node-ID:" 8 60 3>&1 1>&2 2>&3); then
-        if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Nexus-${1}" --yesno "\nNode-ID: $NODE_ID\n\nContinue with the installation?" 10 60); then
+        if [ -z "$NODE_ID" ]; then
+            whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Nexus-${1}" --msgbox "Error: Node-ID cannot be empty" 8 60
+            NODE_ID=""
+        elif (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Nexus-${1}" --yesno "\nNode-ID: $NODE_ID\n\nContinue with the installation?" 10 60); then
             break
         else
             NODE_ID=""
