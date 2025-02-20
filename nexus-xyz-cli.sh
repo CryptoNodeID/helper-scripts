@@ -101,6 +101,7 @@ EOF
 msg_info "Building Nexus-xyz-CLI..."
 sudo docker build -t nexus-xyz-cli:latest -f Dockerfile . >/dev/null 2>&1
 msg_ok "Nexus-xyz-CLI has been built."
+echo "${NODE_ID}" > $HOME/.nexus/node-id
 rm -rf Dockerfile entrypoint.sh
 msg_ok "Nexus-xyz-CLI has been installed."
 
