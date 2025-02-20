@@ -50,7 +50,7 @@ RUN apt update && \\
     cd /root/.nexus && \\
     git clone https://github.com/nexus-xyz/network-api && \\
     cd network-api && \\
-    git -c advice.detachedHead=false checkout $(git rev-list --tags --max-count=1)
+    git -c advice.detachedHead=false checkout \$(git rev-list --tags --max-count=1)
 
 WORKDIR /root/.nexus/network-api/clients/cli
 
@@ -86,17 +86,17 @@ EOF
 tee entrypoint.sh > /dev/null << EOF
 #!/bin/sh
 
-if [ -z "${NODE_ID}" ]; then
+if [ -z "\${NODE_ID}" ]; then
     echo "Error: NODE_ID environment variable is not set or is empty"
     exit 1
 fi
 
-NEXUS_HOME=$HOME/.nexus
-echo "$NODE_ID" > $NEXUS_HOME/node-id
-cd $NEXUS_HOME
+NEXUS_HOME=\$HOME/.nexus
+echo "\$NODE_ID" > \$NEXUS_HOME/node-id
+cd \$NEXUS_HOME
 echo "y" | ./nexus-network --start --beta
 
-exec "$@"
+exec "\$@"
 EOF
 msg_info "Building Nexus-xyz-CLI..."
 sudo docker build -t nexus-xyz-cli:latest -f Dockerfile . >/dev/null 2>&1
