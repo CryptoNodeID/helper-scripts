@@ -156,6 +156,7 @@ services:
 EOF
       msg_ok "docker-compose${i}.yml created successfully."
       done
+      break
     else
       whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cysic-Verifier Add" --msgbox "Error: Number must be greater than 1" 8 60
       NODE_Num=""
