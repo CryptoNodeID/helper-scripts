@@ -38,6 +38,9 @@ msg_ok "Docker has been installed."
 install_Node() {
 docker_check
 
+docker rmi -f nexus-xyz-cli:latest > /dev/null
+docker builder prune -f > /dev/null
+
 mkdir -p $WORKDIR
 cd $WORKDIR
 
