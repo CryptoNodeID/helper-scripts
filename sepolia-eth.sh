@@ -43,6 +43,10 @@ mkdir -p $WORKDIR/geth-data
 mkdir -p $WORKDIR/prysm-data
 mkdir -p $WORKDIR/jwt
 cd $WORKDIR
+if [ -d "$WORKDIR/.env" ]; then
+  msg_warn "Delete previous .env file"
+  rm -rf $WORKDIR/.env
+fi
 echo "UID=$(id -u)" >> .env
 echo "GID=$(id -g)" >> .env
 tee docker-compose.yml > /dev/null << EOF
