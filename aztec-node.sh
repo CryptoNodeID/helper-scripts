@@ -51,6 +51,8 @@ msg_ok "Aztec CLI has been installed."
 mkdir -p $WORKDIR
 cd $WORKDIR
 tee .env > /dev/null << EOF
+UID=$(id -u)
+GID=$(id -g)
 ETHEREUM_HOSTS="$RPC_URL"
 L1_CONSENSUS_HOST_URLS="$BEACON_URL"  
 VALIDATOR_PRIVATE_KEY="$PRIVATE_KEY"
@@ -66,6 +68,7 @@ services:
     image: aztecprotocol/aztec:alpha-testnet
     env_file:
       - .env
+    user: "\${UID}:\${GID}"
     environment:
       DATA_DIRECTORY: /data
       LOG_LEVEL: debug
