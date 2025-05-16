@@ -43,7 +43,7 @@ install_Sequencer() {
 docker_check
 
 if [ -d "$HOME/.aztec" ]; then
-  msg_warn "Delete previous aztec config folder"
+  msg_ok "Delete previous aztec config folder"
   rm -rf $HOME/.aztec
 fi
 bash -i <(curl -s https://install.aztec.network)
