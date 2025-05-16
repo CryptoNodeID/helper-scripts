@@ -50,6 +50,9 @@ bash -i <(curl -s https://install.aztec.network)
 msg_ok "Aztec CLI has been installed."
 mkdir -p $WORKDIR
 cd $WORKDIR
+if ! docker network inspect cnid >/dev/null 2>&1; then
+  docker network create cnid
+fi
 tee .env > /dev/null << EOF
 UID=$(id -u)
 GID=$(id -g)
