@@ -71,7 +71,6 @@ services:
     image: aztecprotocol/aztec:alpha-testnet
     env_file:
       - .env
-    user: "\${UID}:\${GID}"
     environment:
       DATA_DIRECTORY: /data
       LOG_LEVEL: debug
