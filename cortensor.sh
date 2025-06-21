@@ -160,7 +160,6 @@ if [ -d "$WORKDIR" ]; then
     sudo docker compose -f $WORKDIR/docker-compose.yml down >/dev/null 2>&1
     sudo docker compose -f $WORKDIR/docker-compose.yml rm >/dev/null 2>&1
     sudo docker image rm cortensor-image:latest >/dev/null 2>&1
-    rm -rf $WORKDIR/docker-compose.yml
     tee Dockerfile > /dev/null << EOF
 FROM ipfs/kubo:v0.33.2 AS ipfs
 
