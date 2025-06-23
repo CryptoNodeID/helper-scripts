@@ -145,7 +145,7 @@ if (whiptail --backtitle "CryptoNodeID Helper Scripts" --title "Cortensor" --yes
         msg_ok "Old Cortensor has been removed."        
     fi
     msg_ok "Cortensor check complete."
-    msg_info "Starting Cortensor..."
+    msg_info "Starting Cortensor... (first run may take a while *please take some coffee*)"
     sudo docker compose -f $WORKDIR/docker-compose.yml up -d >/dev/null 2>&1
     msg_ok "Cortensor started successfully.\n"
 fi
