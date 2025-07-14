@@ -383,6 +383,11 @@ EOF
       - /var/run/docker.sock:/var/run/docker.sock
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
 
   llm-$i:
     image: cortensor/llm-engine-default-0
@@ -398,6 +403,11 @@ EOF
     command: ["/app/llava-v1.5-7b-q4.llamafile --host \$\$HOST --port \$\$PORT --nobrowser --mlock -t \$\$CPU_THREADS"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
 
 EOF
     done
